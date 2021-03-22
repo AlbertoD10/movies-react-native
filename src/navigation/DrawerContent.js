@@ -18,7 +18,12 @@ export default function DrawerContent(props) {
         focused={screen === 'Home'}
       />
       <DrawerItem
-        label="Popular"
+        label="Próximas películas"
+        onPress={() => onChangeScreen('News')}
+        focused={screen === 'News'}
+      />
+      <DrawerItem
+        label="Películas Populares"
         onPress={() => onChangeScreen('Popular')}
         focused={screen === 'Popular'}
       />

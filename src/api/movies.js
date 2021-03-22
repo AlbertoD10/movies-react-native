@@ -37,14 +37,38 @@ export async function getMovieGenreApi(idGenres) {
   }
 }
 
-// export async function getMovieDetailsApi(idMovie) {
-//   const url = `${API_HOST}/movie/${idMovie}?api_key=${API_KEY}&language=${LANG}`;
+export async function getPopularMovieApi(page) {
+  const url = `${API_HOST}/movie/popular?api_key=${API_KEY}&language=${LANG}&page=${page}`;
 
-//   try {
-//     const response = await fetch(url);
-//     const result = response.json();
-//     return result;
-//   } catch (error) {
-//     return error;
-//   }
-// }
+  try {
+    const response = await fetch(url);
+    const result = response.json();
+    return result;
+  } catch (error) {
+    return error;
+  }
+}
+
+export async function getNewMovies(page) {
+  const url = `${API_HOST}/movie/upcoming?api_key=${API_KEY}&language=${LANG}&page=${page}`;
+
+  try {
+    const response = await fetch(url);
+    const result = response.json();
+    return result;
+  } catch (error) {
+    return error;
+  }
+}
+
+export async function getMovieVideo(id) {
+  const url = `${API_HOST}/movie/${id}/videos?api_key=${API_KEY}&language=${LANG}`;
+
+  try {
+    const response = await fetch(url);
+    const result = response.json();
+    return result;
+  } catch (error) {
+    return error;
+  }
+}

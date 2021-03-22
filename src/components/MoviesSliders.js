@@ -11,6 +11,8 @@ import {
 import {Title} from 'react-native-paper';
 import {BASE_PATH_IMG} from '../utils/constants';
 import Carousel from 'react-native-snap-carousel';
+import {setGenre} from '../utils/functions';
+
 const {width} = Dimensions.get('window');
 const ITEM_WIDTH = Math.round(width * 0.7);
 
@@ -39,20 +41,7 @@ function MovieItem(props) {
   const {poster_path, title, genre_ids} = item;
   const imgPath = `${BASE_PATH_IMG}/w500${poster_path}`;
 
-  //Function to return the name of the movie genre
-  const setGenre = (idGenre) => {
-    const genreName = [];
-    genres.forEach((genre) => {
-      idGenre.forEach((id) => {
-        if (id === genre.id) {
-          genreName.push(`${genre.name}  `);
-        }
-      });
-    });
-
-    return genreName;
-  };
-  const genreName = setGenre(genre_ids);
+  const genreName = setGenre(genre_ids, genres);
 
   const onNavigate = () => {
     navigation.navigate('Movie', {item, genreName});

@@ -3,6 +3,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import Home from '../screens/Home';
 import Popular from '../screens/Popular';
 import Movie from '../screens/Movie';
+import News from '../screens/News';
 import {IconButton} from 'react-native-paper';
 import {StyleSheet} from 'react-native';
 
@@ -45,10 +46,10 @@ export default function StackNavigation(props) {
         }}
       />
       <Stack.Screen
-        name="Popular"
-        component={Popular}
+        name="News"
+        component={News}
         options={{
-          headerTitle: 'Peliculas populares',
+          headerTitle: 'Próximas películas',
           headerTitleAlign: 'center',
         }}
       />
@@ -59,6 +60,11 @@ export default function StackNavigation(props) {
           title: false,
           headerTransparent: true,
         }}
+      />
+      <Stack.Screen
+        name="Popular"
+        component={Popular}
+        options={{headerTitle: 'Películas populares'}}
       />
     </Stack.Navigator>
   );
