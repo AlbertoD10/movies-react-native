@@ -10,8 +10,12 @@ export default function ModaVideo(props) {
 
   useEffect(() => {
     if (video) {
-      if (video.results[0].site === 'YouTube') {
-        setIdVideo(video.results[0].key);
+      if (video.results.length > 0) {
+        if (video.results[0].site === 'YouTube') {
+          setIdVideo(video.results[0].key);
+        } else {
+          alert('Trailer no disponible');
+        }
       }
     }
   }, [video, idVideo]);

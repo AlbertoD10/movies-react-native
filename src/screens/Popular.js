@@ -8,20 +8,26 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
-import {getPopularMovieApi} from '../api/movies';
+import {getPopularMovieApi, getAllGenresApi} from '../api/movies';
 import {BASE_PATH_IMG} from '../utils/constants';
 import {Title} from 'react-native-paper';
 import {Rating} from 'react-native-ratings';
 import starLight from '../assets/icons/starLight.png';
+import {setGenre} from '../utils/functions';
 
-export default function Popular() {
+export default function Popular(props) {
+  const {navigation} = props;
   const [movies, setMovies] = useState([]);
   const [page, setPage] = useState(1);
+  const [genre, setGenre] = useState([]);
 
-  //To get the initial movies
+  //To get the initial movies and genres
   useEffect(() => {
     getPopularMovieApi(page).then((response) => {
       setMovies(response.results);
+    });
+    getAllGenresApi().then((response) => {
+      setGenre(response.genres);
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -44,7 +50,7 @@ export default function Popular() {
   };
 
   const renderItem = ({item}) => {
-    return <Movie item={item} />;
+    return <Movie item={item} navigation={navigation} genre={genre} />;
   };
 
   return (
@@ -61,13 +67,15 @@ export default function Popular() {
 }
 
 function Movie(props) {
-  const {item} = props;
+  const {item, navigation, genre} = props;
   const imageUrl = `${BASE_PATH_IMG}/w500${item.poster_path}`;
   const average = item.vote_average / 2;
   const count = item.vote_count;
+  // console.log(item);
+  const genreName = setGenre(item.genre_ids, genre);
 
   const onNavigate = () => {
-    console.log('Tocaste ombeee');
+    navigation.navigate('Movie', {item, genreName});
   };
 
   return (
