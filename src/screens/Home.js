@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
-import {ScrollView, StyleSheet, View, Text, FlatList} from 'react-native';
-import {Title} from 'react-native-paper';
+import {ScrollView, StyleSheet, View, FlatList} from 'react-native';
+import {Title, Text} from 'react-native-paper';
 import {
   getNewMoviesApi,
   getAllGenresApi,
@@ -63,7 +63,9 @@ export default function Home(props) {
             <Text
               style={[
                 styles.genreList,
-                {color: item.id === genreSelected ? '#8697a5' : 'black'},
+                {
+                  color: item.id === genreSelected ? '#8697a5' : '#1f5357',
+                },
               ]}
               onPress={() => onChangeGenre(item.id)}>
               {item.name}
@@ -89,7 +91,6 @@ const styles = StyleSheet.create({
   },
   title: {
     marginLeft: 15,
-    color: 'black',
   },
   genreList: {
     margin: 15,

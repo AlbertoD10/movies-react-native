@@ -6,9 +6,8 @@ import {
   Image,
   SafeAreaView,
   Pressable,
-  Text,
 } from 'react-native';
-import {Title} from 'react-native-paper';
+import {Title, Text} from 'react-native-paper';
 import {BASE_PATH_IMG} from '../utils/constants';
 import Carousel from 'react-native-snap-carousel';
 import {setGenre} from '../utils/functions';
@@ -78,11 +77,9 @@ const styles = StyleSheet.create({
   movieTitle: {
     textAlign: 'center',
     fontSize: 18,
-    color: 'black',
   },
   movieGenre: {
     fontSize: 12,
-    color: 'black',
     textAlign: 'center',
   },
 });

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Platform, View, StyleSheet, Text} from 'react-native';
+import {Platform, View, StyleSheet} from 'react-native';
 import {IconButton, Modal} from 'react-native-paper';
 import YouTube from 'react-native-youtube';
 import WebView from 'react-native-webview';

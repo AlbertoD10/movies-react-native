@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-  Text,
   SafeAreaView,
   View,
   Dimensions,
@@ -11,6 +10,7 @@ import {
 import Carousel from 'react-native-snap-carousel';
 import {BASE_PATH_IMG} from '../utils/constants';
 import {setGenre} from '../utils/functions';
+import {Text} from 'react-native-paper';
 
 const {width} = Dimensions.get('window');
 const ITEM_WIDTH = Math.round(width * 0.4);
@@ -74,6 +74,5 @@ const styles = StyleSheet.create({
   movieTitle: {
     textAlign: 'center',
     fontSize: 14,
-    color: 'black',
   },
 });

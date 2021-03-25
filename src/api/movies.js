@@ -72,3 +72,15 @@ export async function getMovieVideo(id) {
     return error;
   }
 }
+
+export async function searchMovieApi(name) {
+  const url = `${API_HOST}/search/movie?api_key=${API_KEY}&language=${LANG}&include_adult=true&query=${name}`;
+
+  try {
+    const response = await fetch(url);
+    const result = response.json();
+    return result;
+  } catch (error) {
+    return error;
+  }
+}

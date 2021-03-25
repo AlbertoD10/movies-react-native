@@ -6,8 +6,10 @@ import {Rating} from 'react-native-ratings';
 import ModalVideo from '../components/ModalVideo';
 import starLight from '../assets/icons/starLight.png';
 import {getMovieVideo} from '../api/movies';
+import ThemeContext from '../context/ThemeContext';
 
 export default function Movie(props) {
+  const {theme} = React.useContext(ThemeContext);
   const {
     route: {
       params: {item, genreName},
@@ -35,6 +37,7 @@ export default function Movie(props) {
         <RatingBar
           vote_average={item.vote_average}
           vote_count={item.vote_count}
+          theme={theme}
         />
         <MovieReview overview={item.overview} date={item.release_date} />
       </ScrollView>
@@ -46,7 +49,6 @@ export default function Movie(props) {
     </>
   );
 }
-
 function MovieImage(props) {
   return (
     <View style={styles.viewPoster}>
@@ -65,6 +67,7 @@ function PlayTrailer(props) {
           <IconButton
             style={styles.play}
             icon="play"
+            color="black"
             size={40}
             onPress={() => setShowModal(true)}
           />
@@ -74,7 +77,7 @@ function PlayTrailer(props) {
   }
   return (
     <View style={styles.viewPlay}>
-      <Text style={styles.play}>Trailer no disponible</Text>
+      <Text style={[styles.play, {color: 'black'}]}>Trailer no disponible</Text>
     </View>
   );
 }
@@ -83,14 +86,14 @@ function MovieTitle(props) {
   const {title, genreName} = props;
   return (
     <View style={styles.title}>
-      <Title style={{color: 'black'}}> {title} </Title>
-      <Caption style={{color: 'black'}}>{genreName}</Caption>
+      <Title> {title} </Title>
+      <Caption>{genreName}</Caption>
     </View>
   );
 }
 
 function RatingBar(props) {
-  const {vote_average} = props;
+  const {vote_average, theme} = props;
   let average = vote_average / 2;
   return (
     <View style={styles.ratingBar}>
@@ -100,9 +103,11 @@ function RatingBar(props) {
           ratingImage={starLight}
           imageSize={30}
           startingValue={average}
+          // ratingBackgroundColor={theme === 'dark' ? '#192734' : '#f0f0f0'}
+          tintColor={theme === 'dark' ? '#192734' : '#f0f0f0'}
         />
       </Text>
-      <Text style={{color: 'black'}}> {average} valoración</Text>
+      <Text> {average} valoración</Text>
     </View>
   );
 }
@@ -110,10 +115,8 @@ function RatingBar(props) {
 function MovieReview(props) {
   return (
     <View style={styles.overview}>
-      <Text style={{textAlign: 'justify', color: 'black'}}>
-        {props.overview}
-      </Text>
-      <Text style={{color: 'black'}}>Fecha de lanzamiento: {props.date} </Text>
+      <Text style={{textAlign: 'justify'}}>{props.overview}</Text>
+      <Text>Fecha de lanzamiento: {props.date} </Text>
     </View>
   );
 }
@@ -138,7 +141,6 @@ const styles = StyleSheet.create({
   title: {
     margin: 15,
     marginTop: 0,
-    color: 'black',
   },
   overview: {
     marginTop: 0,

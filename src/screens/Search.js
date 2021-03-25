@@ -7,47 +7,43 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
-import {getPopularMovieApi, getAllGenresApi} from '../api/movies';
+import {getAllGenresApi, searchMovieApi} from '../api/movies';
 import {BASE_PATH_IMG} from '../utils/constants';
-import {Title, Text} from 'react-native-paper';
+import {Title, Searchbar, Text} from 'react-native-paper';
 import {Rating} from 'react-native-ratings';
 import starLight from '../assets/icons/starLight.png';
 import {setGenre} from '../utils/functions';
 import ThemeContext from '../context/ThemeContext';
 
-export default function Popular(props) {
+export default function Search(props) {
   const {navigation} = props;
-  const [movies, setMovies] = useState([]);
-  const [page, setPage] = useState(1);
+  const [movies, setMovies] = useState('');
   const [genre, setGenres] = useState([]);
+  const [query, setQuery] = useState('');
+  const [isMovie, setIsMovie] = useState(true);
 
-  //To get the initial movies and genres
+  //To search the movies
   useEffect(() => {
-    getPopularMovieApi(page).then((response) => {
-      setMovies(response.results);
+    searchMovieApi(query).then((response) => {
+      if (query.length > 1) {
+        if (response.total_results === 0) {
+          setMovies([]);
+          setIsMovie(false);
+        } else {
+          setIsMovie(true);
+          setMovies(response.results);
+        }
+      } else {
+        setMovies([]);
+      }
     });
+  }, [query]);
+
+  useEffect(() => {
     getAllGenresApi().then((response) => {
       setGenres(response.genres);
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  //To get the movies by pagination
-  useEffect(() => {
-    getPopularMovieApi(page).then((response) => {
-      const totalPages = response.total_pages;
-      if (page <= totalPages) {
-        setMovies([...movies, ...response.results]);
-      } else {
-        alert('No mas peliculas para mostrar');
-      }
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page]);
-
-  const loadMoreMovies = () => {
-    setPage(page + 1);
-  };
 
   const renderItem = ({item}) => {
     return <Movie item={item} navigation={navigation} genre={genre} />;
@@ -55,26 +51,44 @@ export default function Popular(props) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <FlatList
-        data={movies}
-        renderItem={renderItem}
-        keyExtractor={(item, index) => index.toString()}
-        onEndReachedThreshold={0.5}
-        onEndReached={loadMoreMovies}
-      />
+      <SearchBar navigation={navigation} setQuery={setQuery} />
+      {isMovie ? (
+        <FlatList
+          style={{marginTop: 5}}
+          data={movies}
+          renderItem={renderItem}
+          keyExtractor={(item, index) => index.toString()}
+        />
+      ) : (
+        <Text style={styles.noMovie}>Pelicula no encontrada :c</Text>
+      )}
     </SafeAreaView>
   );
 }
 
-function Movie(props) {
-  const {theme} = React.useContext(ThemeContext);
+function SearchBar(props) {
+  const {navigation, setQuery} = props;
 
+  return (
+    <View>
+      <Searchbar
+        placeholder="Buscar pelicula"
+        icon="arrow-left"
+        onIconPress={() => navigation.goBack()}
+        autoFocus
+        onChangeText={(e) => setQuery(e)}
+      />
+    </View>
+  );
+}
+
+function Movie(props) {
   const {item, navigation, genre} = props;
   const imageUrl = `${BASE_PATH_IMG}/w500${item.poster_path}`;
   const average = item.vote_average / 2;
   const count = item.vote_count;
-  // console.log(item);
   const genreName = setGenre(item.genre_ids, genre);
+  const {theme} = React.useContext(ThemeContext);
 
   const onNavigate = () => {
     navigation.navigate('Movie', {item, genreName});
@@ -93,8 +107,8 @@ function Movie(props) {
             style={styles.ratingBar}
             imageSize={30}
             startingValue={average}
-            tintColor={theme === 'dark' ? '#192734' : '#f0f0f0'}
             readonly
+            tintColor={theme === 'dark' ? '#192734' : '#f0f0f0'}
           />
           <Text style={{fontSize: 14, color: '#8697a5', marginTop: 5}}>
             {count} votos
@@ -130,5 +144,10 @@ const styles = StyleSheet.create({
   ratingBar: {
     flexDirection: 'row',
     marginTop: 10,
+  },
+  noMovie: {
+    marginTop: 50,
+    fontSize: 20,
+    textAlign: 'center',
   },
 });

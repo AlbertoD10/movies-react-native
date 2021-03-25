@@ -3,6 +3,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import Home from '../screens/Home';
 import Popular from '../screens/Popular';
 import Movie from '../screens/Movie';
+import Search from '../screens/Search';
 import News from '../screens/News';
 import {IconButton} from 'react-native-paper';
 import {StyleSheet} from 'react-native';
@@ -16,20 +17,13 @@ export default function StackNavigation(props) {
     return (
       <IconButton
         icon="magnify"
-        onPress={() => alert('This is a busqueda!')}
-        color="black"
+        onPress={() => navigation.navigate('Search')}
       />
     );
   };
 
   const leftButton = () => {
-    return (
-      <IconButton
-        icon="menu"
-        onPress={() => navigation.openDrawer()}
-        color="black"
-      />
-    );
+    return <IconButton icon="menu" onPress={() => navigation.openDrawer()} />;
   };
 
   return (
@@ -64,7 +58,18 @@ export default function StackNavigation(props) {
       <Stack.Screen
         name="Popular"
         component={Popular}
-        options={{headerTitle: 'Películas populares'}}
+        options={{
+          headerTitle: 'Películas populares',
+          headerTitleAlign: 'center',
+        }}
+      />
+      <Stack.Screen
+        name="Search"
+        component={Search}
+        headerShown={false}
+        options={{
+          headerShown: false,
+        }}
       />
     </Stack.Navigator>
   );
